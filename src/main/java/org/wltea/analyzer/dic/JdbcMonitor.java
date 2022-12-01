@@ -17,6 +17,14 @@ import java.util.List;
  */
 public class JdbcMonitor implements Runnable {
 
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+    }
+
     /**
      * jdbc配置
      */
@@ -34,15 +42,6 @@ public class JdbcMonitor implements Runnable {
 
     public JdbcMonitor(JdbcConfig jdbcConfig) {
         this.jdbcConfig = jdbcConfig;
-        AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-            } catch (Exception e) {
-                logger.error("mysql jdbc driver load failed");
-                logger.error(e.getMessage());
-            }
-            return null;
-        });
     }
 
     @Override
@@ -92,7 +91,7 @@ public class JdbcMonitor implements Runnable {
             logger.info("main: {} stop: {}", mainLastModitime, stopLastModitime);
         } catch (SQLException throwables) {
             logger.error("jdbc load words failed: mainLastModitime-{} stopLostMOditime-{}", mainLastModitime, stopLastModitime);
-            logger.error(throwables.getMessage());
+            logger.error(throwables.getStackTrace());
         } finally {
 
             if (connection != null) {
