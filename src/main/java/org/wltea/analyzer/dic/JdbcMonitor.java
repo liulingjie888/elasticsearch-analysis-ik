@@ -17,14 +17,6 @@ import java.util.List;
  */
 public class JdbcMonitor implements Runnable {
 
-    static {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * jdbc配置
      */
@@ -42,6 +34,15 @@ public class JdbcMonitor implements Runnable {
 
     public JdbcMonitor(JdbcConfig jdbcConfig) {
         this.jdbcConfig = jdbcConfig;
+        AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+            } catch (Exception e) {
+                logger.error("mysql jdbc driver load failed");
+                logger.error(e.getMessage());
+            }
+            return null;
+        });
     }
 
     @Override

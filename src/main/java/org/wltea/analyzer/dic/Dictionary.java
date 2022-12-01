@@ -191,6 +191,7 @@ public class Dictionary {
 							pool.scheduleAtFixedRate(new Monitor(location), 10, 60, TimeUnit.SECONDS);
 						}
 					}
+
 					// 开启数据库增量更新
 					pool.scheduleAtFixedRate(new JdbcMonitor(singleton.jdbcConfig), 10, singleton.jdbcConfig.getInterval(), TimeUnit.SECONDS);
 				}
