@@ -73,6 +73,9 @@ public class JdbcMonitor implements Runnable {
         delMainWords.forEach(w -> Dictionary.getSingleton().disableSegmentMain(w));
         stopWords.forEach(w -> Dictionary.getSingleton().fillSegmentStop(w));
         delStopWords.forEach(w -> Dictionary.getSingleton().disableSegmentStop(w));
+
+
+        logger.info("ik dic refresh from db. mainLastModitime: {} stopLastModitime: {}", mainLastModitime, stopLastModitime);
     }
 
     /**
@@ -88,7 +91,6 @@ public class JdbcMonitor implements Runnable {
             connection = DriverManager.getConnection(jdbcConfig.getUrl(), jdbcConfig.getUsername(), jdbcConfig.getPassword());
             setWordList(connection, jdbcConfig.getMainWordSql(), mainLastModitime, mainWords, delMainWords);
             setWordList(connection, jdbcConfig.getStopWordSql(), stopLastModitime, stopWords, delStopWords);
-            logger.info("main: {} stop: {}", mainLastModitime, stopLastModitime);
         } catch (SQLException throwables) {
             logger.error("jdbc load words failed: mainLastModitime-{} stopLostMOditime-{}", mainLastModitime, stopLastModitime);
             logger.error(throwables.getStackTrace());
