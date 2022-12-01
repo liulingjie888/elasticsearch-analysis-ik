@@ -56,6 +56,7 @@ import org.elasticsearch.core.PathUtils;
 import org.elasticsearch.plugin.analysis.ik.AnalysisIkPlugin;
 import org.wltea.analyzer.cfg.Configuration;
 import org.apache.logging.log4j.Logger;
+import org.wltea.analyzer.cfg.JdbcConfig;
 import org.wltea.analyzer.help.ESPluginLoggerFactory;
 
 
@@ -90,6 +91,7 @@ public class Dictionary {
 	private static final String PATH_DIC_SUFFIX = "suffix.dic";
 	private static final String PATH_DIC_PREP = "preposition.dic";
 	private static final String PATH_DIC_STOP = "stopword.dic";
+	private static final String PATH_JDBC_CONFIG = "jdbc.properties";
 
 	private final static  String FILE_NAME = "IKAnalyzer.cfg.xml";
 	private final static  String EXT_DICT = "ext_dict";
@@ -99,6 +101,7 @@ public class Dictionary {
 
 	private Path conf_dir;
 	private Properties props;
+	private JdbcConfig jdbcConfig;
 
 	private Dictionary(Configuration cfg) {
 		this.configuration = cfg;
@@ -128,6 +131,29 @@ public class Dictionary {
 				logger.error("ik-analyzer", e);
 			}
 		}
+
+		// 读取jdbc配置
+		setJdbcConfig();
+	}
+
+	private void setJdbcConfig() {
+		Path file = PathUtils.get(getDictRoot(), Dictionary.PATH_JDBC_CONFIG);
+		Properties properties = null;
+		try {
+			properties = new Properties();
+			properties.load(new FileInputStream(file.toFile()));
+		} catch (Exception e) {
+			logger.error("load jdbc.properties failed");
+			logger.error(e.getMessage());
+		}
+		jdbcConfig = new JdbcConfig(
+				properties.getProperty("jdbc.url"),
+				properties.getProperty("jdbc.username"),
+				properties.getProperty("jdbc.password"),
+				properties.getProperty("main.word.sql"),
+				properties.getProperty("stop.word.sql"),
+				Integer.valueOf(properties.getProperty("interval"))
+		);
 	}
 
 	private String getProperty(String key){
@@ -165,7 +191,8 @@ public class Dictionary {
 							pool.scheduleAtFixedRate(new Monitor(location), 10, 60, TimeUnit.SECONDS);
 						}
 					}
-
+					// 开启数据库增量更新
+					pool.scheduleAtFixedRate(new JdbcMonitor(singleton.jdbcConfig), 10, singleton.jdbcConfig.getInterval(), TimeUnit.SECONDS);
 				}
 			}
 		}
@@ -559,6 +586,22 @@ public class Dictionary {
 		DictSegment _PrepDict = new DictSegment((char) 0);
 		Path file = PathUtils.get(getDictRoot(), Dictionary.PATH_DIC_PREP);
 		loadDictFile(_PrepDict, file, true, "Preposition");
+	}
+
+	protected void fillSegmentMain(String word) {
+		_MainDict.fillSegment(word.trim().toCharArray());
+	}
+
+	protected void disableSegmentMain(String word) {
+		_MainDict.disableSegment(word.trim().toCharArray());
+	}
+
+	protected void fillSegmentStop(String word) {
+		_StopWords.fillSegment(word.trim().toCharArray());
+	}
+
+	protected void disableSegmentStop(String word) {
+		_StopWords.disableSegment(word.trim().toCharArray());
 	}
 
 	void reLoadMainDict() {
