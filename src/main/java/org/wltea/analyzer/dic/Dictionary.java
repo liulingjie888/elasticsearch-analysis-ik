@@ -145,6 +145,7 @@ public class Dictionary {
             logger.error(e.getMessage());
         }
         jdbcConfig = new JdbcConfig(
+                properties.getProperty("jdbc.driver"),
                 properties.getProperty("jdbc.url"),
                 properties.getProperty("jdbc.username"),
                 properties.getProperty("jdbc.password"),

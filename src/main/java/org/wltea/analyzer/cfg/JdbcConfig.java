@@ -9,14 +9,17 @@ public class JdbcConfig {
     public JdbcConfig() {
     }
 
-    public JdbcConfig(String url, String username, String password, String mainWordSql, String stopWordSql, Integer interval) {
+    public JdbcConfig(String driver, String url, String username, String password, String mainWordSql, String stopWordSql, Integer interval) {
         this.url = url;
         this.username = username;
         this.password = password;
         this.mainWordSql = mainWordSql;
         this.stopWordSql = stopWordSql;
         this.interval = interval;
+        this.driver = driver;
     }
+
+    private String driver;
 
     private String url;
 
@@ -29,6 +32,8 @@ public class JdbcConfig {
     private String stopWordSql;
 
     private Integer interval;
+
+    public String getDriver() { return driver; }
 
     public String getUrl() {
         return url;

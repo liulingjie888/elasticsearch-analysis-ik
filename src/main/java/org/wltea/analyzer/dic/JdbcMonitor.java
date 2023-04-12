@@ -17,13 +17,13 @@ import java.util.List;
  */
 public class JdbcMonitor implements Runnable {
 
-    static {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-    }
+    //static {
+    //    try {
+    //        Class.forName("com.mysql.cj.jdbc.Driver");
+    //    } catch (Exception e) {
+    //        e.getStackTrace();
+    //    }
+    //}
 
     /**
      * jdbc配置
@@ -42,6 +42,11 @@ public class JdbcMonitor implements Runnable {
 
     public JdbcMonitor(JdbcConfig jdbcConfig) {
         this.jdbcConfig = jdbcConfig;
+        try {
+            Class.forName(jdbcConfig.getDriver());
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
     }
 
     @Override
