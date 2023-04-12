@@ -1,7 +1,8 @@
 IK Analysis for Elasticsearch
 =============================
 
-The IK Analysis plugin integrates Lucene IK analyzer (http://code.google.com/p/ik-analyzer/) into elasticsearch, support customized dictionary.
+The IK Analysis plugin integrates Lucene IK analyzer (http://code.google.com/p/ik-analyzer/) into elasticsearch, support
+customized dictionary.
 
 Analyzer: `ik_smart` , `ik_max_word` , Tokenizer: `ik_smart` , `ik_max_word`
 
@@ -30,9 +31,9 @@ Install
 
 * optional 1 - download pre-build package from here: https://github.com/medcl/elasticsearch-analysis-ik/releases
 
-    create plugin folder `cd your-es-root/plugins/ && mkdir ik`
-    
-    unzip plugin to folder `your-es-root/plugins/ik`
+  create plugin folder `cd your-es-root/plugins/ && mkdir ik`
+
+  unzip plugin to folder `your-es-root/plugins/ik`
 
 * optional 2 - use elasticsearch-plugin to install ( supported from version v5.5.1 ):
 
@@ -40,11 +41,9 @@ Install
     ./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.3.0/elasticsearch-analysis-ik-6.3.0.zip
     ```
 
-   NOTE: replace `6.3.0` to your own elasticsearch version
+  NOTE: replace `6.3.0` to your own elasticsearch version
 
 2.restart elasticsearch
-
-
 
 #### Quick Example
 
@@ -201,7 +200,8 @@ or `{plugins}/elasticsearch-analysis-ik-*/config/IKAnalyzer.cfg.xml`
 
 满足上面两点要求就可以实现热更新分词了，不需要重启 ES 实例。
 
-可以将需自动更新的热词放在一个 UTF-8 编码的 .txt 文件里，放在 nginx 或其他简易 http server 下，当 .txt 文件修改时，http server 会在客户端请求该文件时自动返回相应的 Last-Modified 和 ETag。可以另外做一个工具来从业务系统提取相关词汇，并更新这个 .txt 文件。
+可以将需自动更新的热词放在一个 UTF-8 编码的 .txt 文件里，放在 nginx 或其他简易 http server 下，当 .txt 文件修改时，http server 会在客户端请求该文件时自动返回相应的
+Last-Modified 和 ETag。可以另外做一个工具来从业务系统提取相关词汇，并更新这个 .txt 文件。
 
 have fun.
 
@@ -214,7 +214,6 @@ have fun.
 
 2.如何手动安装？
 
-
 ```bash
 git clone https://github.com/medcl/elasticsearch-analysis-ik
 cd elasticsearch-analysis-ik
@@ -224,12 +223,11 @@ mvn compile
 mvn package
 ```
 
-拷贝和解压release下的文件: #{project_path}/elasticsearch-analysis-ik/target/releases/elasticsearch-analysis-ik-*.zip 到你的 elasticsearch 插件目录, 如: plugins/ik
-重启elasticsearch
+拷贝和解压release下的文件: #{project_path}/elasticsearch-analysis-ik/target/releases/elasticsearch-analysis-ik-*.zip 到你的
+elasticsearch 插件目录, 如: plugins/ik 重启elasticsearch
 
-3.分词测试失败
-请在某个索引下调用analyze接口测试,而不是直接调用analyze接口
-如:
+3.分词测试失败 请在某个索引下调用analyze接口测试,而不是直接调用analyze接口 如:
+
 ```bash
 curl -XGET "http://localhost:9200/your_index/_analyze" -H 'Content-Type: application/json' -d'
 {
@@ -237,9 +235,7 @@ curl -XGET "http://localhost:9200/your_index/_analyze" -H 'Content-Type: applica
 }'
 ```
 
-
 4. ik_max_word 和 ik_smart 什么区别?
-
 
 ik_max_word: 会将文本做最细粒度的拆分，比如会将“中华人民共和国国歌”拆分为“中华人民共和国,中华人民,中华,华人,人民共和国,人民,人,民,共和国,共和,和,国国,国歌”，会穷尽各种可能的组合，适合 Term Query；
 
@@ -251,11 +247,10 @@ Changes
 
 - 移除名为 `ik` 的analyzer和tokenizer,请分别使用 `ik_smart` 和 `ik_max_word`
 
-
 Thanks
 ------
-YourKit supports IK Analysis for ElasticSearch project with its full-featured Java Profiler.
-YourKit, LLC is the creator of innovative and intelligent tools for profiling
-Java and .NET applications. Take a look at YourKit's leading software products:
+YourKit supports IK Analysis for ElasticSearch project with its full-featured Java Profiler. YourKit, LLC is the creator
+of innovative and intelligent tools for profiling Java and .NET applications. Take a look at YourKit's leading software
+products:
 <a href="http://www.yourkit.com/java/profiler/index.jsp">YourKit Java Profiler</a> and
 <a href="http://www.yourkit.com/.net/profiler/index.jsp">YourKit .NET Profiler</a>.

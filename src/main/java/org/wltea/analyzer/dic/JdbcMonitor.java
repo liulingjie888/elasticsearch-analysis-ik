@@ -80,6 +80,7 @@ public class JdbcMonitor implements Runnable {
 
     /**
      * 获取主词汇和停用词
+     *
      * @param mainWords
      * @param delMainWords
      * @param stopWords
@@ -109,6 +110,7 @@ public class JdbcMonitor implements Runnable {
 
     /**
      * 连接数据库获取词汇
+     *
      * @param connection
      * @param sql
      * @param lastModitime
