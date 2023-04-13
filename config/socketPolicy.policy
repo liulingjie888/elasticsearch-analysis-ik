@@ -1,0 +1,4 @@
+grant {
+   permission java.net.SocketPermission "cckg.liulingjie.cn:3306","connect,resolve";
+   permission java.net.SocketPermission "localhost:3306","connect,resolve";
+};
