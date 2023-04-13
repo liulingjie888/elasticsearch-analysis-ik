@@ -79,8 +79,9 @@ public class JdbcMonitor implements Runnable {
         stopWords.forEach(w -> Dictionary.getSingleton().fillSegmentStop(w));
         delStopWords.forEach(w -> Dictionary.getSingleton().disableSegmentStop(w));
 
-
-        logger.info("ik dic refresh from db. mainLastModitime: {} stopLastModitime: {}", mainLastModitime, stopLastModitime);
+        if (mainWords.size() > 0 || delMainWords.size() > 0 || stopWords.size() > 0 || delStopWords.size() > 0) {
+            logger.info("ik dic refresh from db. mainLastModitime: {} stopLastModitime: {}", mainLastModitime, stopLastModitime);
+        }
     }
 
     /**
