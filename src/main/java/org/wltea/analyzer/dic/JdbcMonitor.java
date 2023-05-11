@@ -32,11 +32,11 @@ public class JdbcMonitor implements Runnable {
     /**
      * 主词汇上次更新时间
      */
-    private Timestamp mainLastModitime = Timestamp.valueOf("2022-01-01 00:00:00");
+    private Timestamp mainLastModitime = Timestamp.valueOf("2010-01-01 00:00:00");
     /**
      * 停用词上次更新时间
      */
-    private Timestamp stopLastModitime = Timestamp.valueOf("2022-01-01 00:00:00");
+    private Timestamp stopLastModitime = Timestamp.valueOf("2010-01-01 00:00:00");
 
     private static final Logger logger = ESPluginLoggerFactory.getLogger(JdbcMonitor.class.getName());
 
